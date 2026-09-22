@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Reservas de Recursos</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      background-color: #001f3f; /* azul marino */
+      color: white;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    header h2 {
+      flex: 1;
+      text-align: center;
+      text-decoration: underline;
+      margin: 0;
+    }
+
+    header img {
+      height: 120px;   /* logo más grande */
+      width: 120px;
+      border-radius: 50%; /* logo circular */
+      box-shadow: 0 0 15px rgba(0,0,0,0.6); /* efecto 3D */
+    }
+
+    h3, label {
+      color: white;
+    }
+
+    table {
+      border-collapse: collapse;
+      margin: 20px auto;
+      background-color: #d3d3d3; /* gris claro */
+      box-shadow: 4px 4px 10px rgba(0,0,0,0.5);
+    }
+
+    td, th {
+      border: 1px solid #999;
+      padding: 10px;
+      text-align: center;
+      color: black;
+    }
+
+    td.seleccionado {
+      background-color: #a8d5ff;
+    }
+
+    #formulario {
+      display: none;
+      margin: 20px;
+      background: #f0f0f0;
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 4px 4px 10px rgba(0,0,0,0.5);
+      color: black; /* letras negras */
+    }
+
+    #formulario h3, #formulario label {
+      color: black;
+    }
+
+    label {
+      display: block;
+      margin-top: 10px;
+    }
+
+    #tablaReservas {
+      margin-top: 30px;
+      width: 100%;
+    }
+
+    #tablaReservas th, #tablaReservas td {
+      border: 1px solid #999;
+      padding: 8px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h2>Calendario de Recursos</h2>
+    <img src="logo-7733.png" alt="Logo Escuela 7733">
+  </header>
+
+  <label>Seleccionar fecha:
+    <input type="date" id="selectorFecha">
+  </label>
+
+  <h3 id="fechaTitulo"></h3>
+  <table id="calendario"></table>
+
+  <div id="formulario">
+    <h3>Formulario de Reserva</h3>
+    <form id="reservaForm">
+      <label>Nombre y Apellido: <input type="text" name="nombre" required></label>
+      <label>Curso y División: <input type="text" name="curso" required></label>
+      <label>Notebooks (cantidad): <input type="number" name="notebooks" min="0"></label>
+      <label><input type="checkbox" name="alargues"> Precisa alargues</label>
+      <label><input type="checkbox" name="hdmi"> Cable HDMI</label>
+      <label><input type="checkbox" name="parlante"> Parlante</label>
+      <label><input type="checkbox" name="microfono"> Micrófono</label>
+      <label><input type="checkbox" name="proyector"> Proyector</label>
+      <input type="hidden" name="fecha" id="fechaSeleccionada">
+      <input type="hidden" name="horas" id="horasSeleccionadas">
+      <button type="submit">Confirmar Reserva</button>
+    </form>
+  </div>
+
+  <h3>Reservas Confirmadas</h3>
+  <table id="tablaReservas">
+    <thead>
+      <tr>
+        <th>Fecha</th><th>Horas</th><th>Docente</th><th>Curso</th><th>Recursos</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <script>
+    /* Todo el script original se mantiene igual */
+    const tabla = document.getElementById('calendario');
+    const horasSeleccionadas = [];
+
+    const rangos = [
+      "07:45 - 08:25","08:25 - 09:05","09:15 - 09:55","09:55 - 10:35",
+      "10:45 - 11:25","11:25 - 12:05","12:05 - 12:45","12:45 - 13:25",
+      "13:30 - 14:10","14:10 - 14:50","15:00 - 15:40","15:40 - 16:20",
+      "16:30 - 17:10","17:10 - 17:50","17:50 - 18:30","18:30 - 19:10"
+    ];
+
+    function recursosTexto(r) {
+      const recursos = [];
+      if (r.notebooks && r.notebooks > 0) recursos.push(`Notebooks: ${r.notebooks}`);
+      if (r.alargues === true || r.alargues === "on") recursos.push("Alargues");
+      if (r.hdmi === true || r.hdmi === "on") recursos.push("HDMI");
+      if (r.parlante === true || r.parlante === "on") recursos.push("Parlante");
+      if (r.microfono === true || r.microfono === "on") recursos.push("Micrófono");
+      if (r.proyector === true || r.proyector === "on") recursos.push("Proyector");
+      return recursos.join(", ");
+    }
+
+    function generarBloques(fecha) {
+      tabla.innerHTML = '';
+      horasSeleccionadas.length = 0;
+
+      const fechaObj = new Date(fecha + "T00:00:00");
+      document.getElementById('fechaTitulo').textContent =
+        "Reservas para el día " + fechaObj.toLocaleDateString('es-AR');
+
+      let fila = document.createElement('tr');
+      rangos.forEach((rango, idx) => {
+        const celda = document.createElement('td');
+        celda.textContent = rango;
+        celda.onclick = () => {
+          if (celda.classList.contains('seleccionado')) {
+            celda.classList.remove('seleccionado');
+            const idxSel = horasSeleccionadas.indexOf(rango);
+            if (idxSel > -1) horasSeleccionadas.splice(idxSel,1);
+          } else {
+            celda.classList.add('seleccionado');
+            horasSeleccionadas.push(rango);
+          }
+          document.getElementById('formulario').style.display = 'block';
+          document.getElementById('fechaSeleccionada').value = fecha;
+          document.getElementById('horasSeleccionadas').value = horasSeleccionadas.join(', ');
+        };
+        fila.appendChild(celda);
+        if ((idx+1) % 4 === 0) {
+          tabla.appendChild(fila);
+          fila = document.createElement('tr');
+        }
+      });
+      if (fila.children.length > 0) tabla.appendChild(fila);
+    }
+
+    const hoy = new Date().toISOString().split('T')[0];
+    document.getElementById('selectorFecha').value = hoy;
+    generarBloques(hoy);
+
+    document.getElementById('selectorFecha').onchange = (e) => {
+      generarBloques(e.target.value);
+    };
+
+    document.getElementById('reservaForm').onsubmit = async (e) => {
+      e.preventDefault();
+      const datos = Object.fromEntries(new FormData(e.target).entries());
+      datos.alargues = !!datos.alargues;
+      datos.hdmi = !!datos.hdmi;
+      datos.parlante = !!datos.parlante;
+      datos.microfono = !!datos.microfono;
+      datos.proyector = !!datos.proyector;
+
+      const res = await fetch('/api/recursos', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(datos)
+      });
+
+      if (!res.ok) {
+        const error = await res.json();
+        alert(error.error);
+        return;
+      }
+
+      alert("Reserva confirmada correctamente");
+      const data = await fetch('/api/recursos').then(r => r.json());
+      renderReservas(data);
+
+      e.target.reset();
+      document.getElementById('formulario').style.display = 'none';
+      horasSeleccionadas.length = 0;
+      document.querySelectorAll('#calendario td').forEach(td => td.classList.remove('seleccionado'));
+    };
+
+    function renderReservas(data) {
+      const tbody = document.querySelector('#tablaReservas tbody');
+      tbody.innerHTML = '';
+      const agrupadas = {};
+      data.forEach(r => {
+        if (!agrupadas[r.fecha]) agrupadas[r.fecha] = [];
+        agrupadas[r.fecha].push(r);
+      });
+      Object.keys(agrupadas).forEach(fecha => {
+        agrupadas[fecha].forEach(r => {
+          const fila = document.createElement('tr');
+          fila.innerHTML = `
+            <td>${r.fecha}</td>
+            <td>${r.horas}</td>
+            <td>${r.nombre}</td>
+            <td>${r.curso}</td>
+            <td>${recursosTexto(r)}</td>
+          `;
+          tbody.appendChild(fila);
+        });
+      });
+    }
+
+    fetch('/api/recursos')
+      .then(res => res.json())
+      .then(data => renderReservas(data));
+  </script>
+</body>
+</html>

@@ -1,0 +1,135 @@
+[
+  {
+    "id": 1,
+    "docente": "Mariana",
+    "materia": "Matemáticas",
+    "recurso": "TV sala STEM",
+    "fecha": "2026-09-15T07:45:00"
+  },
+  {
+    "id": 2,
+    "docente": "Carlos",
+    "materia": "Historia",
+    "recurso": "Proyector",
+    "fecha": "2026-09-15T09:05:00"
+  },
+  {
+    "id": 3,
+    "docente": "Lucía",
+    "materia": "Biología",
+    "recurso": "Espacio Biblioteca",
+    "fecha": "2026-09-16T11:45:00"
+  },
+  {
+    "id": 4,
+    "docente": "Docente desconocido",
+    "recurso": "Biblioteca",
+    "fecha": "15/9/2026, 08:34:44"
+  },
+  {
+    "id": 5,
+    "docente": "Maríana",
+    "recurso": "Biblioteca",
+    "fecha": "15/9/2026, 09:42:49"
+  },
+  {
+    "id": 6,
+    "docente": "Maríana",
+    "recurso": "Biblioteca",
+    "fecha": "15/9/2026, 09:53:08"
+  },
+  {
+    "docente": "Mariana",
+    "materia": "Matematicas",
+    "curso": "4° 1",
+    "espacio": "Sala STEM",
+    "recursos": [
+      "TV Sala STEM",
+      "Notebooks (5)",
+      "Alargues",
+      "Cargadores"
+    ],
+    "fecha": "2026-09-18",
+    "horarios": [
+      "07:45",
+      "09:05",
+      "10:25"
+    ],
+    "id": 7
+  },
+  {
+    "docente": "Prueba",
+    "materia": "materia 2",
+    "curso": "1° 1ra",
+    "espacio": "Biblioteca",
+    "recursos": [
+      "TV Biblioteca",
+      "Notebooks (5)",
+      "Alargues",
+      "Cable HDMI",
+      "Cargadores"
+    ],
+    "fecha": "2026-09-18",
+    "horarios": [
+      "11:05",
+      "11:45"
+    ],
+    "id": 8
+  },
+  {
+    "docente": "Maríana",
+    "materia": "materia 2",
+    "curso": "1° 1ra",
+    "espacio": "Sala STEM",
+    "recursos": [
+      "TV Sala STEM",
+      "Notebooks (4)",
+      "Alargues",
+      "Cable HDMI"
+    ],
+    "fecha": "2026-09-17",
+    "horarios": [
+      "07:45",
+      "08:25",
+      "09:05"
+    ],
+    "id": 9
+  },
+  {
+    "docente": "Maríana",
+    "materia": "materia 2",
+    "curso": "1° 1ra",
+    "espacio": "Sala STEM",
+    "recursos": [
+      "TV Sala STEM",
+      "Notebooks (3)",
+      "Alargues",
+      "Cargadores"
+    ],
+    "fecha": "2026-09-17",
+    "horarios": [
+      "11:05",
+      "11:45"
+    ],
+    "id": 10
+  },
+  {
+    "docente": "Mariana",
+    "materia": "Matematicas",
+    "curso": "4° 1",
+    "espacio": "Sala STEM",
+    "recursos": [
+      "TV Sala STEM",
+      "Notebooks (4)",
+      "Alargues",
+      "Cable HDMI"
+    ],
+    "fecha": "2026-09-17",
+    "horarios": [
+      "08:25",
+      "09:05",
+      "09:45"
+    ],
+    "id": 11
+  }
+]

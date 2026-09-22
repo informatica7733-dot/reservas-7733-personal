@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Calendario STEAM</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background-color: #0073e6;
+      color: white;
+    }
+    header {
+      text-align: center;
+      padding: 20px;
+    }
+    header img {
+      height: 120px;
+      width: 120px;
+      border-radius: 50%; /* logo circular */
+      box-shadow: 0 0 15px rgba(0,0,0,0.6); /* efecto 3D */
+      display: block;
+      margin: 0 auto;
+    }
+    h2 {
+      text-align: center;
+      text-decoration: underline;
+      margin-top: 10px;
+    }
+    .calendar-section {
+      background-color: white;
+      color: black;
+      margin: 40px auto;
+      padding: 25px;
+      width: 95%; /* más ancho */
+      max-width: 1200px; /* más grande */
+      border-radius: 10px;
+      border: 6px ridge #0073e6; /* borde 3D */
+      position: relative;
+    }
+    .reservas-section {
+      background-color: #f0f0f0; /* fondo gris claro */
+    }
+    iframe {
+      border: 0;
+      width: 100%;
+      height: 800px; /* más alto */
+    }
+    .section-title {
+      text-align: center;
+      font-size: 24px;
+      font-weight: bold;
+      text-decoration: underline;
+      margin-bottom: 20px;
+      color: #0073e6;
+    }
+    /* Flecha institucional iluminada */
+    .arrow-down {
+      text-align: center;
+      font-size: 130px;
+      color: #003366; /* azul oscuro */
+      text-shadow: 
+        0 0 15px #00ccff,
+        0 0 30px #00ccff,
+        0 0 45px #00ccff,
+        2px 2px 8px rgba(0,0,0,0.7);
+      animation: bounce 2s infinite;
+      margin: 40px 0;
+    }
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(25px); }
+    }
+    /* Stickers */
+    .sticker {
+      position: absolute;
+      width: 200px;
+      height: 200px;
+      box-shadow: 8px 8px 15px rgba(0,0,0,0.6);
+      animation: float 4s ease-in-out infinite, rotate 8s linear infinite;
+    }
+    .sticker-left-top { left: -240px; top: -40px; }
+    .sticker-right-mid { right: -240px; top: 250px; }
+    .sticker-left-bottom { left: -240px; bottom: 50px; }
+    .sticker-right-bottom { right: -240px; bottom: -30px; }
+
+    @keyframes float {
+      0% { transform: translateY(0); }
+      50% { transform: translateY(-20px); }
+      100% { transform: translateY(0); }
+    }
+    @keyframes rotate {
+      0% { transform: rotate(-5deg); }
+      50% { transform: rotate(5deg); }
+      100% { transform: rotate(-5deg); }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <img src="logo-7733.png" alt="Logo Escuela 7733">
+    <h2>Calendario de Recursos STEAM</h2>
+  </header>
+
+  <!-- Agenda de reservas realizadas -->
+  <div class="calendar-section">
+    <div class="section-title">AGENDA DE RESERVAS REALIZADAS</div>
+    <iframe src="https://calendar.google.com/calendar/embed?src=tutoria.preceptoria.escuela7733%40gmail.com&ctz=America%2FArgentina%2FCatamarca&mode=AGENDA"
+            frameborder="0" scrolling="no"></iframe>
+    <!-- Stickers decorativos flotando -->
+    <img src="notebook.png" class="sticker sticker-left-top" alt="Notebook">
+    <img src="calculadora.png" class="sticker sticker-right-mid" alt="Calculadora">
+    <img src="proyector.png" class="sticker sticker-left-bottom" alt="Proyector">
+    <img src="parlante.png" class="sticker sticker-right-bottom" alt="Parlante">
+  </div>
+
+  <!-- Flecha hacia abajo institucional iluminada -->
+  <div class="arrow-down">⬇️</div>
+
+  <!-- Calendario para generar reservas -->
+  <div class="calendar-section reservas-section">
+    <div class="section-title">GENERAR RESERVAS</div>
+    <iframe src="https://calendar.app.google/FS24C8XveLVqLr466"
+            frameborder="0" scrolling="yes"></iframe>
+    <!-- Stickers decorativos flotando -->
+    <img src="cable.png" class="sticker sticker-left-top" alt="Cable auxiliar">
+    <img src="alargue.png" class="sticker sticker-right-mid" alt="Alargue">
+    <img src="microfono.png" class="sticker sticker-left-bottom" alt="Micrófono">
+    <img src="notebook.png" class="sticker sticker-right-bottom" alt="Notebook">
+  </div>
+</body>
+</html>

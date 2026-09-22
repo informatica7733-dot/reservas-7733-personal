@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Página Principal</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      text-align: center;
+      /* Fondo con gradiente en colores institucionales */
+      background: linear-gradient(135deg, #003366, #0073e6);
+      color: white;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    /* Logo centrado y grande */
+    .logo {
+      width: 200px;   /* tamaño más grande */
+      height: 200px;
+      border-radius: 50%; /* circular */
+      box-shadow: 0 0 25px rgba(0,0,0,0.7); /* efecto 3D */
+      margin: 0 auto 40px auto; /* centrado con espacio debajo */
+      display: block;
+    }
+
+    .botones {
+      display: flex;
+      justify-content: center;
+      gap: 25px;
+      flex-wrap: wrap;
+    }
+
+    .botones button {
+      padding: 18px 35px;
+      font-size: 20px;
+      border-radius: 10px;
+      border: none;
+      background-color: #005bb5; /* azul institucional */
+      color: white;
+      cursor: pointer;
+      box-shadow: 3px 3px 10px rgba(0,0,0,0.6);
+      transition: background-color 0.3s ease;
+    }
+
+    .botones button:hover {
+      background-color: #0099ff; /* tono más claro al pasar el mouse */
+    }
+  </style>
+</head>
+<body>
+  <!-- Logo centrado arriba -->
+  <img src="logo-7733.png" alt="Logo Escuela 7733" class="logo">
+
+  <!-- Botones debajo del logo -->
+  <div class="botones">
+    <button onclick="location.href='steam.html'">Calendario STEAM</button>
+    <button onclick="location.href='biblioteca.html'">Calendario Biblioteca</button>
+    <button onclick="location.href='recursos.html'">Calendario Recursos</button>
+  </div>
+</body>
+</html>

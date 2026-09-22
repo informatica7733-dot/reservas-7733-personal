@@ -1,0 +1,50 @@
+[
+  {
+    "nombre": "Baldi María",
+    "curso": "1° 1",
+    "notebooks": "6",
+    "alargues": true,
+    "fecha": "2026-09-18",
+    "horas": "07:45, 09:05, 08:25",
+    "hdmi": false,
+    "parlante": false,
+    "microfono": false,
+    "proyector": false
+  },
+  {
+    "nombre": "Baldi María",
+    "curso": "4° 1",
+    "notebooks": "6",
+    "alargues": true,
+    "fecha": "2026-09-17",
+    "horas": "07:45, 09:05, 08:25",
+    "hdmi": false,
+    "parlante": false,
+    "microfono": false,
+    "proyector": false
+  },
+  {
+    "nombre": "Baldi María",
+    "curso": "1° 1",
+    "notebooks": "6",
+    "alargues": true,
+    "fecha": "2026-09-18",
+    "horas": "07:45, 09:05, 08:25",
+    "hdmi": false,
+    "parlante": false,
+    "microfono": false,
+    "proyector": false
+  },
+  {
+    "nombre": "Baldi María",
+    "curso": "4° 1",
+    "notebooks": "6",
+    "alargues": true,
+    "fecha": "2026-09-23",
+    "horas": "13:45",
+    "hdmi": false,
+    "parlante": false,
+    "microfono": false,
+    "proyector": false
+  }
+]
