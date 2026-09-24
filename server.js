@@ -13,7 +13,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 // Endpoint para Biblioteca
 app.get('/api/biblioteca', async (req, res) => {
   try {
-    const events = await getEvents('TU_CALENDAR_ID_BIBLIOTECA'); // reemplazá con el ID real
+    const events = await getEvents('informatica7733@gmail.com'); // Calendar ID real de Biblioteca
     res.json(events);
   } catch (err) {
     console.error('Error en /api/biblioteca:', err);
@@ -24,7 +24,7 @@ app.get('/api/biblioteca', async (req, res) => {
 // Endpoint para Sala STEAM
 app.get('/api/steam', async (req, res) => {
   try {
-    const events = await getEvents('TU_CALENDAR_ID_STEAM'); // reemplazá con el ID real
+    const events = await getEvents('tutoria.preceptoria.escuela7733@gmail.com'); // Calendar ID real de STEAM
     res.json(events);
   } catch (err) {
     console.error('Error en /api/steam:', err);

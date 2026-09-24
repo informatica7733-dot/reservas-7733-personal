@@ -105,7 +105,8 @@
   <!-- Agenda de reservas realizadas -->
   <div class="calendar-section">
     <div class="section-title">AGENDA DE RESERVAS REALIZADAS</div>
-    <iframe src="https://calendar.google.com/calendar/embed?src=tutoria.preceptoria.escuela7733%40gmail.com&ctz=America%2FArgentina%2FCatamarca&mode=AGENDA"
+    <iframe id="agendaFrame"
+            src="https://calendar.google.com/calendar/embed?src=tutoria.preceptoria.escuela7733%40gmail.com&ctz=America%2FArgentina%2FCatamarca&mode=AGENDA"
             frameborder="0" scrolling="no"></iframe>
     <!-- Stickers decorativos flotando -->
     <img src="notebook.png" class="sticker sticker-left-top" alt="Notebook">
@@ -120,7 +121,8 @@
   <!-- Calendario para generar reservas -->
   <div class="calendar-section reservas-section">
     <div class="section-title">GENERAR RESERVAS</div>
-    <iframe src="https://calendar.app.google/FS24C8XveLVqLr466"
+    <iframe id="reservasFrame"
+            src="https://calendar.app.google/FS24C8XveLVqLr466"
             frameborder="0" scrolling="yes"></iframe>
     <!-- Stickers decorativos flotando -->
     <img src="cable.png" class="sticker sticker-left-top" alt="Cable auxiliar">
@@ -128,5 +130,14 @@
     <img src="microfono.png" class="sticker sticker-left-bottom" alt="Micrófono">
     <img src="notebook.png" class="sticker sticker-right-bottom" alt="Notebook">
   </div>
+
+  <script>
+    // Refrescar la agenda automáticamente cada vez que se hace una reserva
+    const reservasFrame = document.getElementById('reservasFrame');
+    reservasFrame.addEventListener('load', () => {
+      const agendaFrame = document.getElementById('agendaFrame');
+      agendaFrame.src = agendaFrame.src; // fuerza recarga del iframe agenda
+    });
+  </script>
 </body>
 </html>
