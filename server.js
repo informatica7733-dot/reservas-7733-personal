@@ -1,6 +1,11 @@
-const { google } = require('googleapis');
 const express = require('express');
+const { google } = require('googleapis');
+const path = require('path');
+
 const app = express();
+
+// Servir archivos estáticos desde la carpeta "public"
+app.use(express.static('public'));
 
 // Autenticación con service account
 const auth = new google.auth.GoogleAuth({
@@ -8,7 +13,7 @@ const auth = new google.auth.GoogleAuth({
   scopes: ['https://www.googleapis.com/auth/calendar.readonly'],
 });
 
-// Biblioteca
+// Endpoint Biblioteca
 app.get('/api/reservas-biblioteca', async (req, res) => {
   try {
     const client = await auth.getClient();
@@ -29,7 +34,7 @@ app.get('/api/reservas-biblioteca', async (req, res) => {
   }
 });
 
-// STEAM
+// Endpoint STEAM
 app.get('/api/reservas-steam', async (req, res) => {
   try {
     const client = await auth.getClient();
@@ -50,4 +55,11 @@ app.get('/api/reservas-steam', async (req, res) => {
   }
 });
 
-app.listen(3000, () => console.log('Servidor corriendo en puerto 3000'));
+// Ruta raíz: abre Biblioteca por defecto
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'biblioteca.html'));
+});
+
+// Puerto Render
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`Servidor corriendo en puerto ${PORT}`));
