@@ -126,12 +126,11 @@
   </div>
 
   <script>
-    // Refrescar la agenda automáticamente cada vez que se hace una reserva
-    const reservasFrame = document.getElementById('reservasFrame');
-    reservasFrame.addEventListener('load', () => {
+    // Refrescar la agenda automáticamente cada 30 segundos
+    setInterval(() => {
       const agendaFrame = document.getElementById('agendaFrame');
       agendaFrame.src = agendaFrame.src; // fuerza recarga del iframe agenda
-    });
+    }, 30000);
   </script>
 </body>
 </html>

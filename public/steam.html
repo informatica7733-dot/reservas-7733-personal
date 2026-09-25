@@ -54,11 +54,10 @@
       margin-bottom: 20px;
       color: #0073e6;
     }
-    /* Flecha institucional iluminada */
     .arrow-down {
       text-align: center;
       font-size: 130px;
-      color: #003366; /* azul oscuro */
+      color: #003366;
       text-shadow: 
         0 0 15px #00ccff,
         0 0 30px #00ccff,
@@ -71,7 +70,6 @@
       0%, 100% { transform: translateY(0); }
       50% { transform: translateY(25px); }
     }
-    /* Stickers */
     .sticker {
       position: absolute;
       width: 200px;
@@ -83,7 +81,6 @@
     .sticker-right-mid { right: -240px; top: 250px; }
     .sticker-left-bottom { left: -240px; bottom: 50px; }
     .sticker-right-bottom { right: -240px; bottom: -30px; }
-
     @keyframes float {
       0% { transform: translateY(0); }
       50% { transform: translateY(-20px); }
@@ -108,14 +105,12 @@
     <iframe id="agendaFrame"
             src="https://calendar.google.com/calendar/embed?src=tutoria.preceptoria.escuela7733%40gmail.com&ctz=America%2FArgentina%2FCatamarca&mode=AGENDA"
             frameborder="0" scrolling="no"></iframe>
-    <!-- Stickers decorativos flotando -->
     <img src="notebook.png" class="sticker sticker-left-top" alt="Notebook">
     <img src="calculadora.png" class="sticker sticker-right-mid" alt="Calculadora">
     <img src="proyector.png" class="sticker sticker-left-bottom" alt="Proyector">
     <img src="parlante.png" class="sticker sticker-right-bottom" alt="Parlante">
   </div>
 
-  <!-- Flecha hacia abajo institucional iluminada -->
   <div class="arrow-down">⬇️</div>
 
   <!-- Calendario para generar reservas -->
@@ -124,7 +119,6 @@
     <iframe id="reservasFrame"
             src="https://calendar.app.google/FS24C8XveLVqLr466"
             frameborder="0" scrolling="yes"></iframe>
-    <!-- Stickers decorativos flotando -->
     <img src="cable.png" class="sticker sticker-left-top" alt="Cable auxiliar">
     <img src="alargue.png" class="sticker sticker-right-mid" alt="Alargue">
     <img src="microfono.png" class="sticker sticker-left-bottom" alt="Micrófono">
@@ -132,12 +126,11 @@
   </div>
 
   <script>
-    // Refrescar la agenda automáticamente cada vez que se hace una reserva
-    const reservasFrame = document.getElementById('reservasFrame');
-    reservasFrame.addEventListener('load', () => {
+    // Refrescar la agenda automáticamente cada 30 segundos
+    setInterval(() => {
       const agendaFrame = document.getElementById('agendaFrame');
       agendaFrame.src = agendaFrame.src; // fuerza recarga del iframe agenda
-    });
+    }, 30000);
   </script>
 </body>
 </html>
