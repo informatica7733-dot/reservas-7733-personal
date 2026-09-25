@@ -30,7 +30,7 @@ app.get('/api/reservas-biblioteca', async (req, res) => {
     res.json(response.data.items);
   } catch (error) {
     console.error(error);
-    res.status(500).send('Error al obtener reservas de Biblioteca');
+    res.status(500).json({ error: 'Error al obtener reservas de Biblioteca' });
   }
 });
 
@@ -51,7 +51,7 @@ app.get('/api/reservas-steam', async (req, res) => {
     res.json(response.data.items);
   } catch (error) {
     console.error(error);
-    res.status(500).send('Error al obtener reservas de STEAM');
+    res.status(500).json({ error: 'Error al obtener reservas de STEAM' });
   }
 });
 
