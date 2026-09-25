@@ -20,7 +20,7 @@ app.get('/api/reservas-biblioteca', async (req, res) => {
     const calendar = google.calendar({ version: 'v3', auth: client });
 
     const response = await calendar.events.list({
-      calendarId: 'informatica7733@gmail.com', // ✅ ID correcto para Biblioteca
+      calendarId: 'informatica7733@gmail.com', // ✅ Biblioteca
       timeMin: new Date().toISOString(),
       maxResults: 20,
       singleEvents: true,
@@ -41,7 +41,7 @@ app.get('/api/reservas-steam', async (req, res) => {
     const calendar = google.calendar({ version: 'v3', auth: client });
 
     const response = await calendar.events.list({
-      calendarId: 'tutoria.preceptoria.escuela7733@gmail.com', // ✅ ID correcto para STEAM
+      calendarId: 'tutoria.preceptoria.escuela7733@gmail.com', // ✅ STEAM
       timeMin: new Date().toISOString(),
       maxResults: 20,
       singleEvents: true,
