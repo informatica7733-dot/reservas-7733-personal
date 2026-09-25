@@ -7,9 +7,9 @@ const app = express();
 // Servir archivos estáticos desde la carpeta "public"
 app.use(express.static('public'));
 
-// Autenticación con service account
+// Autenticación con credenciales desde variable de entorno
 const auth = new google.auth.GoogleAuth({
-  keyFile: 'service-account.json',
+  credentials: JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT),
   scopes: ['https://www.googleapis.com/auth/calendar.readonly'],
 });
 
