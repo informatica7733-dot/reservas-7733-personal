@@ -1,55 +1,53 @@
+const { google } = require('googleapis');
 const express = require('express');
-const path = require('path');
-const { getEvents } = require('./calendar'); // tu módulo calendar.js
-
 const app = express();
 
-// Render asigna automáticamente un puerto en la variable de entorno PORT
-const PORT = process.env.PORT || 3000;
+// Autenticación con service account
+const auth = new google.auth.GoogleAuth({
+  keyFile: 'service-account.json',
+  scopes: ['https://www.googleapis.com/auth/calendar.readonly'],
+});
 
-// Servir archivos estáticos desde la carpeta "public"
-app.use(express.static(path.join(__dirname, 'public')));
-
-// Endpoint para Biblioteca
-app.get('/api/biblioteca', async (req, res) => {
+// Biblioteca
+app.get('/api/reservas-biblioteca', async (req, res) => {
   try {
-    const events = await getEvents('informatica7733@gmail.com'); // Calendar ID real de Biblioteca
-    res.json(events);
-  } catch (err) {
-    console.error('Error en /api/biblioteca:', err);
-    res.status(500).json({ error: 'No se pudieron obtener los eventos de Biblioteca' });
+    const client = await auth.getClient();
+    const calendar = google.calendar({ version: 'v3', auth: client });
+
+    const response = await calendar.events.list({
+      calendarId: 'tutoria.preceptoria.escuela7733@gmail.com',
+      timeMin: new Date().toISOString(),
+      maxResults: 20,
+      singleEvents: true,
+      orderBy: 'startTime',
+    });
+
+    res.json(response.data.items);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Error al obtener reservas de Biblioteca');
   }
 });
 
-// Endpoint para Sala STEAM
-app.get('/api/steam', async (req, res) => {
+// STEAM
+app.get('/api/reservas-steam', async (req, res) => {
   try {
-    const events = await getEvents('tutoria.preceptoria.escuela7733@gmail.com'); // Calendar ID real de STEAM
-    res.json(events);
-  } catch (err) {
-    console.error('Error en /api/steam:', err);
-    res.status(500).json({ error: 'No se pudieron obtener los eventos de STEAM' });
+    const client = await auth.getClient();
+    const calendar = google.calendar({ version: 'v3', auth: client });
+
+    const response = await calendar.events.list({
+      calendarId: 'steam.preceptoria.escuela7733@gmail.com',
+      timeMin: new Date().toISOString(),
+      maxResults: 20,
+      singleEvents: true,
+      orderBy: 'startTime',
+    });
+
+    res.json(response.data.items);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Error al obtener reservas de STEAM');
   }
 });
 
-// Rutas para páginas HTML (si las tenés en public)
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
-});
-
-app.get('/biblioteca', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'biblioteca.html'));
-});
-
-app.get('/steam', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'steam.html'));
-});
-
-app.get('/recursos', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'recursos.html'));
-});
-
-// Iniciar servidor
-app.listen(PORT, () => {
-  console.log(`Servidor corriendo en http://localhost:${PORT}`);
-});
+app.listen(3000, () => console.log('Servidor corriendo en puerto 3000'));
