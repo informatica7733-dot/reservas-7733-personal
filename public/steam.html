@@ -15,19 +15,34 @@
 
 <script>
   async function cargarReservasSteam() {
-    const response = await fetch('/api/reservas-steam');
-    const reservas = await response.json();
-    const lista = document.getElementById('listaReservasSteam');
-    lista.innerHTML = '';
+    try {
+      const response = await fetch('/api/reservas-steam');
+      if (!response.ok) throw new Error('Error en la API');
+      const reservas = await response.json();
 
-    reservas.forEach(evento => {
-      const li = document.createElement('li');
-      const inicio = new Date(evento.start.dateTime || evento.start.date);
-      li.textContent = `${inicio.toLocaleString()} → ${evento.summary}`;
-      lista.appendChild(li);
-    });
+      const lista = document.getElementById('listaReservasSteam');
+      lista.innerHTML = '';
+
+      if (reservas.length === 0) {
+        lista.innerHTML = '<li>No hay reservas confirmadas</li>';
+        return;
+      }
+
+      reservas.forEach(evento => {
+        const li = document.createElement('li');
+        const inicio = new Date(evento.start.dateTime || evento.start.date);
+        li.textContent = `${inicio.toLocaleString()} → ${evento.summary}`;
+        lista.appendChild(li);
+      });
+    } catch (err) {
+      document.getElementById('listaReservasSteam').innerHTML =
+        '<li>Error al cargar reservas de STEAM</li>';
+    }
   }
 
+  // Cargar al inicio
   cargarReservasSteam();
+
+  // Refrescar cada 30 segundos
   setInterval(cargarReservasSteam, 30000);
 </script>

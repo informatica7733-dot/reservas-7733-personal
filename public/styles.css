@@ -58,6 +58,49 @@ iframe {
   margin-top: 30px; /* baja el bloque para que no tape horarios */
 }
 
+/* 📋 Bloques de reservas confirmadas */
+.calendar-section {
+  margin: 20px auto;
+  padding: 15px;
+  max-width: 800px;
+  background: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.section-title {
+  font-size: 1.4em;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #0073e6;
+  text-align: center;
+}
+
+#listaReservasBiblioteca,
+#listaReservasSteam {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+#listaReservasBiblioteca li,
+#listaReservasSteam li {
+  padding: 10px;
+  margin-bottom: 8px;
+  background: #ffffff;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 1.1em;
+  color: #444;
+}
+
+/* Flecha separadora */
+.arrow-down {
+  text-align: center;
+  font-size: 1.5em;
+  margin: 15px 0;
+}
+
 /* 📱 Responsividad */
 @media (max-width: 1024px) {
   main {
