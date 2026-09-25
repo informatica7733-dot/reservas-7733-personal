@@ -10,7 +10,7 @@ app.use(express.static('public'));
 // Autenticación con credenciales desde variable de entorno
 const auth = new google.auth.GoogleAuth({
   credentials: JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT),
-  scopes: ['https://www.googleapis.com/auth/calendar.readonly'],
+  scopes: ['https://www.googleapis.com/auth/calendar'], // ✅ Scope ampliado
 });
 
 // Endpoint Biblioteca
@@ -29,7 +29,7 @@ app.get('/api/reservas-biblioteca', async (req, res) => {
 
     res.json(response.data.items);
   } catch (error) {
-    console.error(error);
+    console.error('Error Biblioteca:', error);
     res.status(500).json({ error: 'Error al obtener reservas de Biblioteca' });
   }
 });
@@ -50,7 +50,7 @@ app.get('/api/reservas-steam', async (req, res) => {
 
     res.json(response.data.items);
   } catch (error) {
-    console.error(error);
+    console.error('Error STEAM:', error);
     res.status(500).json({ error: 'Error al obtener reservas de STEAM' });
   }
 });
