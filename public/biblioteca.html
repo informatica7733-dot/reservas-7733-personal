@@ -39,8 +39,7 @@
     const tabla = document.getElementById("tabla-horarios");
     horarios.forEach(h => {
       const fila = document.createElement("tr");
-      fila.innerHTML = `<td>${h}</td>
-        <td><button onclick="reservar('${h}')">Reservar</button></td>`;
+      fila.innerHTML = `<td class="horario" onclick="reservar('${h}')">${h}</td>`;
       tabla.appendChild(fila);
     });
 
@@ -49,11 +48,16 @@
       const docente = document.getElementById("docente").value;
       const curso = document.getElementById("curso").value;
 
+      if (!fecha || !docente || !curso) {
+        alert("Por favor complete todos los campos antes de reservar.");
+        return;
+      }
+
       const res = await fetch("/reservas", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          recurso: "STEAM",
+          recurso: "Biblioteca",  // ✅ corregido
           docente,
           curso,
           fecha,
@@ -72,7 +76,7 @@
     }
 
     async function cargarReservas() {
-      const res = await fetch("/reservas?recurso=STEAM");
+      const res = await fetch("/reservas?recurso=Biblioteca"); // ✅ corregido
       const data = await res.json();
       const tbody = document.getElementById("tabla-confirmadas");
       tbody.innerHTML = "";
