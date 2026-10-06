@@ -1,48 +1,87 @@
-<div class="calendar-section">
-  <div class="section-title">RESERVAS CONFIRMADAS</div>
-  <ul id="listaReservasBiblioteca"></ul>
-</div>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Reservas Biblioteca</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <h1>Reservar Biblioteca</h1>
 
-<div class="arrow-down">⬇️</div>
+  <label>Fecha: <input type="date" id="fecha"></label><br>
+  <label>Docente: <input type="text" id="docente"></label><br>
+  <label>Curso: <input type="text" id="curso"></label><br>
 
-<!-- Calendario para generar reservas -->
-<div class="calendar-section reservas-section">
-  <div class="section-title">GENERAR RESERVAS</div>
-  <iframe id="reservasFrame"
-          src="https://calendar.app.google/G7moFnrPrqpSJYSC9"
-          frameborder="0" scrolling="yes"></iframe>
-</div>
+  <h2>Horarios disponibles</h2>
+  <table id="tabla-horarios"></table>
 
-<script>
-  async function cargarReservasBiblioteca() {
-    try {
-      const response = await fetch('/api/reservas-biblioteca');
-      if (!response.ok) throw new Error('Error en la API');
-      const reservas = await response.json();
+  <h2>Reservas confirmadas</h2>
+  <table border="1">
+    <thead>
+      <tr><th>Docente</th><th>Curso</th><th>Fecha</th><th>Horario</th></tr>
+    </thead>
+    <tbody id="tabla-confirmadas"></tbody>
+  </table>
 
-      const lista = document.getElementById('listaReservasBiblioteca');
-      lista.innerHTML = '';
+  <script>
+    const horarios = [
+      "07:45 - 08:25","08:25 - 09:05","09:15 - 09:55","09:55 - 10:35",
+      "10:45 - 11:25","11:25 - 12:05","12:05 - 12:45","12:45 - 13:25",
+      "13:30 - 14:10","14:10 - 14:50","15:00 - 15:40","15:40 - 16:20",
+      "16:30 - 17:10","17:10 - 17:50","17:50 - 18:30","18:30 - 19:10"
+    ];
 
-      if (reservas.length === 0) {
-        lista.innerHTML = '<li>No hay reservas confirmadas</li>';
-        return;
-      }
+    const tabla = document.getElementById("tabla-horarios");
+    horarios.forEach(h => {
+      const fila = document.createElement("tr");
+      fila.innerHTML = `<td>${h}</td>
+        <td><button onclick="reservar('${h}')">Reservar</button></td>`;
+      tabla.appendChild(fila);
+    });
 
-      reservas.forEach(evento => {
-        const li = document.createElement('li');
-        const inicio = new Date(evento.start.dateTime || evento.start.date);
-        li.textContent = `${inicio.toLocaleString()} → ${evento.summary}`;
-        lista.appendChild(li);
+    async function reservar(horario) {
+      const fecha = document.getElementById("fecha").value;
+      const docente = document.getElementById("docente").value;
+      const curso = document.getElementById("curso").value;
+
+      const res = await fetch("/reservas", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          recurso: "STEAM",
+          docente,
+          curso,
+          fecha,
+          horario,
+          recursos: {}
+        })
       });
-    } catch (err) {
-      document.getElementById('listaReservasBiblioteca').innerHTML =
-        '<li>Error al cargar reservas de Biblioteca</li>';
+
+      if (res.ok) {
+        alert("Reserva confirmada");
+        cargarReservas();
+      } else {
+        const err = await res.json();
+        alert("Error: " + err.error);
+      }
     }
-  }
 
-  // Cargar al inicio
-  cargarReservasBiblioteca();
+    async function cargarReservas() {
+      const res = await fetch("/reservas?recurso=STEAM");
+      const data = await res.json();
+      const tbody = document.getElementById("tabla-confirmadas");
+      tbody.innerHTML = "";
+      data.forEach(r => {
+        tbody.innerHTML += `<tr>
+          <td>${r.docente}</td>
+          <td>${r.curso}</td>
+          <td>${r.fecha}</td>
+          <td>${r.horario}</td>
+        </tr>`;
+      });
+    }
 
-  // Refrescar cada 30 segundos
-  setInterval(cargarReservasBiblioteca, 30000);
-</script>
+    cargarReservas();
+  </script>
+</body>
+</html>

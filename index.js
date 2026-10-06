@@ -1,104 +1,79 @@
-const express = require('express');
-const path = require('path');
-const fs = require('fs');
-const { google } = require('googleapis');
-
+const express = require("express");
+const fs = require("fs");
+const bodyParser = require("body-parser");
 const app = express();
-app.use(express.static(path.join(__dirname, 'public')));
-app.use(express.json());
+const PORT = process.env.PORT || 3000;
 
-// -------------------- GOOGLE CALENDAR --------------------
-const auth = new google.auth.GoogleAuth({
-  keyFile: 'credentials.json',
-  scopes: ['https://www.googleapis.com/auth/calendar.readonly'],
-});
-const calendar = google.calendar({ version: 'v3', auth });
+app.use(bodyParser.json());
+app.use(express.static("public"));
 
-async function getEvents(calendarId) {
-  try {
-    const res = await calendar.events.list({
-      calendarId: calendarId,
-      timeMin: new Date().toISOString(),
-      timeMax: new Date(new Date().setMonth(new Date().getMonth() + 1)).toISOString(),
-      singleEvents: true,
-      orderBy: 'startTime',
-    });
+// Horarios fijos
+const horarios = [
+  "07:45 - 08:25", "08:25 - 09:05", "09:15 - 09:55", "09:55 - 10:35",
+  "10:45 - 11:25", "11:25 - 12:05", "12:05 - 12:45", "12:45 - 13:25",
+  "13:30 - 14:10", "14:10 - 14:50", "15:00 - 15:40", "15:40 - 16:20",
+  "16:30 - 17:10", "17:10 - 17:50", "17:50 - 18:30", "18:30 - 19:10"
+];
 
-    return res.data.items.map(event => ({
-      fecha: event.start.dateTime || event.start.date,
-      hora: event.start.dateTime
-        ? new Date(event.start.dateTime).toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit' })
-        : '',
-      usuario: event.summary || 'Reserva sin nombre',
-    }));
-  } catch (err) {
-    console.error('Error al obtener eventos:', err);
-    return [];
+// Archivo donde guardamos todas las reservas
+const FILE = "reservas.json";
+
+// Cargar reservas existentes
+let reservas = [];
+if (fs.existsSync(FILE)) {
+  reservas = JSON.parse(fs.readFileSync(FILE));
+}
+
+// Endpoint: listar reservas (todas o por recurso)
+app.get("/reservas", (req, res) => {
+  const { recurso } = req.query;
+  if (recurso) {
+    return res.json(reservas.filter(r => r.recurso === recurso));
   }
-}
-
-app.get('/api/biblioteca', async (req, res) => {
-  const events = await getEvents('TU_CALENDAR_ID_BIBLIOTECA');
-  res.json(events);
-});
-
-app.get('/api/steam', async (req, res) => {
-  const events = await getEvents('TU_CALENDAR_ID_STEAM');
-  res.json(events);
-});
-
-// -------------------- RECURSOS --------------------
-const reservasFile = path.join(__dirname, 'reservas_recursos.json');
-
-function leerReservas() {
-  if (!fs.existsSync(reservasFile)) return [];
-  return JSON.parse(fs.readFileSync(reservasFile));
-}
-
-function guardarReservas(reservas) {
-  fs.writeFileSync(reservasFile, JSON.stringify(reservas, null, 2));
-}
-
-app.get('/api/recursos', (req, res) => {
-  let reservas = leerReservas();
-  reservas.sort((a, b) => {
-    if (a.fecha < b.fecha) return -1;
-    if (a.fecha > b.fecha) return 1;
-    const horaA = a.horas.split(',')[0];
-    const horaB = b.horas.split(',')[0];
-    return horaA.localeCompare(horaB);
-  });
   res.json(reservas);
 });
 
-app.post('/api/recursos', (req, res) => {
-  const nuevaReserva = req.body;
-  const reservas = leerReservas();
+// Endpoint: crear reserva
+app.post("/reservas", (req, res) => {
+  const { recurso, docente, curso, fecha, horario, recursos } = req.body;
 
-  // Validación: máximo 20 notebooks por bloque horario en un mismo día
-  if (nuevaReserva.notebooks && nuevaReserva.notebooks > 0) {
-    const bloques = nuevaReserva.horas.split(',').map(h => h.trim());
-    for (const bloque of bloques) {
-      // Sumar notebooks ya reservadas en ese día y bloque
-      const totalEnBloque = reservas
-        .filter(r => r.fecha === nuevaReserva.fecha && r.horas.includes(bloque))
-        .reduce((sum, r) => sum + (parseInt(r.notebooks) || 0), 0);
-
-      const disponibles = 20 - totalEnBloque;
-      if (nuevaReserva.notebooks > disponibles) {
-        return res.status(400).json({
-          error: `No hay suficientes notebooks disponibles en el bloque ${bloque}. Solo quedan ${disponibles}.`,
-        });
-      }
-    }
+  // Validar horario
+  if (!horarios.includes(horario)) {
+    return res.status(400).json({ error: "Horario inválido" });
   }
 
-  reservas.push(nuevaReserva);
-  guardarReservas(reservas);
-  res.json({ mensaje: 'Reserva guardada correctamente', reserva: nuevaReserva });
+  // Validar conflicto
+  const existe = reservas.find(r =>
+    r.recurso === recurso &&
+    r.fecha === fecha &&
+    r.horario === horario
+  );
+  if (existe) {
+    return res.status(400).json({ error: "Ese horario ya está reservado" });
+  }
+
+  // Validar notebooks
+  if (recursos?.notebooks > 20) {
+    return res.status(400).json({ error: "Máximo 20 notebooks" });
+  }
+
+  // Crear nueva reserva
+  const nueva = {
+    id: reservas.length + 1,
+    recurso,
+    docente,
+    curso,
+    fecha,
+    horario,
+    recursos
+  };
+
+  reservas.push(nueva);
+  fs.writeFileSync(FILE, JSON.stringify(reservas, null, 2));
+  res.json(nueva);
 });
 
-// -------------------- SERVIDOR --------------------
-app.listen(3000, () => {
-  console.log('Servidor corriendo en http://localhost:3000');
+// Iniciar servidor
+app.listen(PORT, () => {
+  console.log(`Servidor corriendo en http://localhost:${PORT}`);
 });
