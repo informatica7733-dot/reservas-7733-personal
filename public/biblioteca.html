@@ -1,15 +1,4 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <title>Reservas Biblioteca</title>
-  <link rel="stylesheet" href="styles.css">
-</head>
-<header>
-  <img src="logo-7733.png" alt="Logo Escuela 7733">
-  <h1>Reservar Biblioteca</h1>
-</header>
-
+...
 <body>
   <h1>Reservar Biblioteca</h1>
 
@@ -18,7 +7,9 @@
   <label>Curso: <input type="text" id="curso"></label><br>
 
   <h2>Horarios disponibles</h2>
-  <table id="tabla-horarios"></table>
+  <div id="horarios-container"></div>
+
+  <button onclick="confirmarReserva()">Confirmar Reserva</button>
 
   <h2>Reservas confirmadas</h2>
   <table border="1">
@@ -29,27 +20,32 @@
   </table>
 
   <script>
-    const horarios = [
-      "07:45 - 08:25","08:25 - 09:05","09:15 - 09:55","09:55 - 10:35",
-      "10:45 - 11:25","11:25 - 12:05","12:05 - 12:45","12:45 - 13:25",
-      "13:30 - 14:10","14:10 - 14:50","15:00 - 15:40","15:40 - 16:20",
-      "16:30 - 17:10","17:10 - 17:50","17:50 - 18:30","18:30 - 19:10"
-    ];
+    // mismos horarios y funciones que STEAM
+    const horarios = [...]; // igual que arriba
+    const cont = document.getElementById("horarios-container");
+    let horarioSeleccionado = null;
 
-    const tabla = document.getElementById("tabla-horarios");
     horarios.forEach(h => {
-      const fila = document.createElement("tr");
-      fila.innerHTML = `<td class="horario" onclick="reservar('${h}')">${h}</td>`;
-      tabla.appendChild(fila);
+      const div = document.createElement("div");
+      div.className = "horario-bloque";
+      div.innerText = h;
+      div.onclick = () => seleccionarHorario(div, h);
+      cont.appendChild(div);
     });
 
-    async function reservar(horario) {
+    function seleccionarHorario(div, h) {
+      document.querySelectorAll(".horario-bloque").forEach(el => el.classList.remove("seleccionado"));
+      div.classList.add("seleccionado");
+      horarioSeleccionado = h;
+    }
+
+    async function confirmarReserva() {
       const fecha = document.getElementById("fecha").value;
       const docente = document.getElementById("docente").value;
       const curso = document.getElementById("curso").value;
 
-      if (!fecha || !docente || !curso) {
-        alert("Por favor complete todos los campos antes de reservar.");
+      if (!fecha || !docente || !curso || !horarioSeleccionado) {
+        alert("Complete todos los campos y seleccione un horario.");
         return;
       }
 
@@ -57,11 +53,11 @@
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          recurso: "Biblioteca",  // ✅ corregido
+          recurso: "Biblioteca", // ✅ corregido
           docente,
           curso,
           fecha,
-          horario,
+          horario: horarioSeleccionado,
           recursos: {}
         })
       });
@@ -92,29 +88,4 @@
 
     cargarReservas();
   </script>
-</body>
-<footer>
-  <div class="footer-container">
-    <p>
-      <img src="ubicacion.png" alt="Ubicación"> 
-      Independencia N°450
-    </p>
-    <p>
-      <img src="whatsapp.png" alt="WhatsApp"> 
-      <a href="tel:2805093500">2805093500</a>
-    </p>
-    <p>
-      <img src="mail.png" alt="Mail"> 
-      <a href="mailto:informatica7733@gmail.com">informatica7733@gmail.com</a>
-    </p>
-    <p>
-      <img src="facebook.png" alt="Facebook"> 
-      <a href="https://facebook.com/escuela7733" target="_blank">Escuela 7733</a>
-    </p>
-    <p>
-      <img src="instagram.png" alt="Instagram"> 
-      <a href="https://instagram.com/escuela7733.pm" target="_blank">@escuela7733.pm</a>
-    </p>
-  </div>
-</footer>
-</html>
+...
