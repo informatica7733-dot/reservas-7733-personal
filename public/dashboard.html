@@ -2,32 +2,92 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Dashboard - Escuela 7733</title>
+  <title>Dashboard Reservas</title>
   <link rel="stylesheet" href="styles.css">
+  <style>
+    /* Estilos adicionales para el dashboard */
+    .tabs {
+      display: flex;
+      justify-content: center;
+      background-color: #1565c0;
+      margin-bottom: 20px;
+    }
+
+    .tab {
+      flex: 1;
+      padding: 15px;
+      text-align: center;
+      color: #fff;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .tab:hover {
+      background-color: #0d47a1;
+    }
+
+    .tab.active {
+      background-color: #ffeb3b;
+      color: #000;
+      font-weight: bold;
+    }
+
+    .tab-content {
+      display: none;
+      padding: 20px;
+      background-color: #f5f5f5;
+      color: #000;
+      border-radius: 6px;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+  </style>
 </head>
+<header>
+  <img src="logo-7733.png" alt="Logo Escuela 7733">
+  <h1>Dashboard de Reservas</h1>
+</header>
 <body>
-  <header>
-    <img src="logo-7733.png" alt="Logo Escuela 7733" class="logo">
-    <h1>Panel de Reservas - Escuela N° 7733</h1>
-  </header>
+  <div class="tabs">
+    <div class="tab active" onclick="openTab('steam')">Sala STEAM</div>
+    <div class="tab" onclick="openTab('biblioteca')">Biblioteca</div>
+    <div class="tab" onclick="openTab('recursos')">Recursos</div>
+  </div>
 
-  <main>
-    <!-- Formulario de reservas -->
-    <h2>Reservas en Google Calendar</h2>
-    <div style="text-align:center; margin-top:20px;">
-      <iframe src="https://calendar.app.google/3zxcrZpGS32yd1ae9"
-              style="border:0" width="100%" height="800" frameborder="0" scrolling="yes"></iframe>
-    </div>
+  <div id="steam" class="tab-content active">
+    <h2>Reservar Sala STEAM</h2>
+    <iframe src="steam.html" width="100%" height="600" style="border:none;"></iframe>
+  </div>
 
-    <!-- 👉 Línea divisoria -->
-    <div class="section-divider"></div>
+  <div id="biblioteca" class="tab-content">
+    <h2>Reservar Biblioteca</h2>
+    <iframe src="biblioteca.html" width="100%" height="600" style="border:none;"></iframe>
+  </div>
 
-    <!-- Vista de reservas confirmadas -->
-    <h2 class="confirmadas">Reservas confirmadas</h2>
-    <div style="text-align:center; margin-top:20px;">
-      <iframe src="https://calendar.google.com/calendar/embed?src=aW5mb3JtYXRpY2E3NzMzQGdtYWlsLmNvbQ&ctz=America%2FArgentina%2FBuenos_Aires"
-              style="border:0" width="100%" height="800" frameborder="0" scrolling="yes"></iframe>
-    </div>
-  </main>
+  <div id="recursos" class="tab-content">
+    <h2>Reservar Recursos</h2>
+    <iframe src="recursos.html" width="100%" height="600" style="border:none;"></iframe>
+  </div>
+
+  <script>
+    function openTab(tabId) {
+      document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+      document.querySelectorAll(".tab-content").forEach(c => c.classList.remove("active"));
+
+      document.querySelector(`.tab[onclick="openTab('${tabId}')"]`).classList.add("active");
+      document.getElementById(tabId).classList.add("active");
+    }
+  </script>
 </body>
+<footer>
+  <div class="footer-container">
+    <p><img src="ubicacion.png" alt="Ubicación"> Independencia N°450</p>
+    <p><img src="whatsapp.png" alt="WhatsApp"> <a href="tel:2805093500">2805093500</a></p>
+    <p><img src="mail.png" alt="Mail"> <a href="mailto:informatica7733@gmail.com">informatica7733@gmail.com</a></p>
+    <p><img src="facebook.png" alt="Facebook"> <a href="https://facebook.com/escuela7733" target="_blank">Escuela 7733</a></p>
+    <p><img src="instagram.png" alt="Instagram"> <a href="https://instagram.com/escuela7733.pm" target="_blank">@escuela7733.pm</a></p>
+  </div>
+</footer>
 </html>
