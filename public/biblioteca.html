@@ -84,14 +84,14 @@
 
         if (!res.ok) {
           const err = await res.json();
-          alert("Error en horario " + h + ": " + err.error);
+          alert("Horario reservado por otro docente: " + h);
         }
       }
 
       alert("Reservas confirmadas");
       horariosSeleccionados = [];
       document.querySelectorAll(".horario-bloque").forEach(el => el.classList.remove("seleccionado"));
-      cargarReservas();
+      await cargarReservas();
     }
 
     async function cargarReservas() {
