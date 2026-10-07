@@ -91,6 +91,12 @@
       const data = await res.json();
       const tbody = document.getElementById("tabla-confirmadas");
       tbody.innerHTML = "";
+
+      if (data.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="4">No hay reservas confirmadas</td></tr>`;
+        return;
+      }
+
       data.forEach(r => {
         tbody.innerHTML += `<tr>
           <td>${r.docente}</td>

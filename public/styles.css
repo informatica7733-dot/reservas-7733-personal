@@ -46,6 +46,11 @@ table th, table td {
   text-align: center;
 }
 
+/* Filas alternadas para mejor lectura */
+table tr:nth-child(even) {
+  background-color: #fafafa;
+}
+
 /* Botones */
 button {
   background-color: #1565c0;
@@ -94,6 +99,8 @@ footer a {
 footer a:hover {
   text-decoration: underline;
 }
+
+/* Bloques de horarios en grilla */
 #horarios-container {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -117,4 +124,6 @@ footer a:hover {
 
 .horario-bloque.seleccionado {
   background-color: #1565c0;
-  color: #
+  color: #fff;
+  font-weight: bold;
+}

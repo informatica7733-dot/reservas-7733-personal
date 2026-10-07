@@ -20,8 +20,7 @@
   </table>
 
   <script>
-    // mismos horarios y funciones que STEAM
-    const horarios = [...]; // igual que arriba
+    const horarios = [...]; // igual que STEAM
     const cont = document.getElementById("horarios-container");
     let horarioSeleccionado = null;
 
@@ -76,6 +75,12 @@
       const data = await res.json();
       const tbody = document.getElementById("tabla-confirmadas");
       tbody.innerHTML = "";
+
+      if (data.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="4">No hay reservas confirmadas</td></tr>`;
+        return;
+      }
+
       data.forEach(r => {
         tbody.innerHTML += `<tr>
           <td>${r.docente}</td>
